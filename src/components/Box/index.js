@@ -1,15 +1,14 @@
 import styled from "styled-components";
 
-export const Box = styled.div`
-  background-color: #ffffff;
+const Box = styled.div`
+  background: #ffffff;
 
   border-radius: 8px;
 
   padding: 1rem;
 
-  /* CSS Pré-Pronto */
   margin-bottom: 10px;
-  .boxLink {
+  .boxLink {  
     font-size: 14px;
     color: #2E7BB4;
     text-decoration: none;
@@ -31,6 +30,12 @@ export const Box = styled.div`
     font-weight: 700;
     color: #333333;
     margin-bottom: 20px;
+  }
+  .buttonVerTodos {
+    display: block;
+    color: #2E7BB4;
+    font-weight: bold;
+    margin-top: 2rem;
   }
   hr {
     margin-top: 12px;
@@ -59,3 +64,5 @@ export const Box = styled.div`
     background-color: #6F92BB;
   }
 `
+
+export default Box;
