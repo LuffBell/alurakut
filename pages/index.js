@@ -134,7 +134,6 @@ export default function Home() {
             </ul>
             <a className="buttonVerTodos">Ver Todos</a>
           </ProfileRelationsWrapper>
-          
         </div>
       </MainGrid>
     </>
