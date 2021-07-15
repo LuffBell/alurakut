@@ -10,7 +10,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body {
-    background-image: url('https://github.com/LuffBell/alurakut/blob/main/src/img/background.jpg?raw=true');
+    background-image: url('https://github.com/LuffBell/alurakut/blob/main/src/img/img2.jpg?raw=true');
   }
 
   img {
