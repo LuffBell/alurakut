@@ -5,11 +5,21 @@ import { ProfileRelationsWrapper } from "../src/components/ProfileRelationsWrapp
 import { useState } from "react"
 import ProfileSideBar from "../src/components/ProfileSideBar"
 import { FormAddComunity } from "../src/components/FormAddComunity"
+import { AddDepoiment } from "../src/components/AddDepoiment"
+import { SendScrap } from "../src/components/SendScrap"
 
 
 export default function Home() {
   const [pessoasFavoritas, setPessoasFavoritas] = useState([])
-  const [comunidades, setComunidades] = useState([{ data: new Date().toISOString(), nome: "AluraKut", imagen: "http://placehold.it/300x300" }])
+  const [comunidades, setComunidades] = useState([
+    { data: new Date().toISOString(), nome: "Circo Pega Fogo", imagen: "https://github.com/LuffBell/alurakut/blob/main/src/img/comu1.jpeg?raw=true" },
+    { data: new Date().toISOString(), nome: "VASP", imagen: "https://github.com/LuffBell/alurakut/blob/main/src/img/comu2.jpg?raw=true" },
+    { data: new Date().toISOString(), nome: "Pensador", imagen: "https://raw.githubusercontent.com/LuffBell/alurakut/main/src/img/comu3.webp" },
+    { data: new Date().toISOString(), nome: "Er...", imagen: "https://github.com/LuffBell/alurakut/blob/main/src/img/comu4.jpg?raw=true" },
+    { data: new Date().toISOString(), nome: "Esquizopocs", imagen: "https://github.com/LuffBell/alurakut/blob/main/src/img/comu5.jfif?raw=true" },
+    { data: new Date().toISOString(), nome: "<3", imagen: "https://github.com/LuffBell/alurakut/blob/main/src/img/comu6.jpg?raw=true" },
+  ])
+  const [controller, setController] = useState(0);
 
   const axios = require('axios').default;
 
@@ -57,7 +67,17 @@ export default function Home() {
           </Box>
           <Box>
             <h2 className="subTitle">O que você deseja fazer?</h2>
-            <FormAddComunity handleAddCommunity={handleAddCommunity}/>
+
+            <ul style={{ display: "flex", listStyle: "none", justifyContent: "space-around", marginBottom: "1rem" }}>
+              {["Criar Comunidade", "Escrever um depoimento", "Deixar um scrap"].map((i,index)=>{
+                return (
+                  <li key={index}>
+                    <button>{i}</button>
+                  </li>
+                )
+              })}
+            </ul>
+
           </Box>
         </div>
         <div className="profileRelationsArea" style={{ gridArea: "profileRelationsArea" }}>
