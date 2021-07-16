@@ -53,10 +53,10 @@ export function AlurakutMenu({ githubUser }) {
   )
 }
 AlurakutMenu.Wrapper = styled.header`
-  width: 100%;
-  background-color: #308BC5;
+  max-width: 1100px;
+  margin: 0 auto;
   .alurakutMenuProfileSidebar {
-    background: white;
+    background: rgb(255,255,255,0.9);
     position: fixed;
     z-index: 100;
     padding: 46px;
@@ -93,10 +93,13 @@ AlurakutMenu.Wrapper = styled.header`
     }
   }
   .container {
-    background-color: #308BC5;
+    background-color: rgb(255,255,255,0.4);
+    backdrop-filter: blur(5px);
+    border-radius: 20px;
+    border: 0.5px solid #ffffff;
     padding: 7px 16px;
     max-width: 1110px;
-    margin: auto;
+    margin: 1rem auto 0 auto;
     display: flex;
     justify-content: space-between;
     position: relative;
@@ -119,14 +122,14 @@ AlurakutMenu.Wrapper = styled.header`
         display: flex;
       }
       a {
-        font-size: 12px;
-        color: white;
+        font-size: 14px;
+        color: rgb(0,0,0);
         padding: 10px 16px;
         position: relative;
         text-decoration: none;
         &:after {
           content: " ";
-          background-color: #5292C1;
+          background-color: rgb(255,255,255);
           display: block;
           position: absolute;
           width: 1px;
@@ -136,11 +139,16 @@ AlurakutMenu.Wrapper = styled.header`
           top: 0;
           bottom: 0;
         }
+        :first-child {
+          &:after {
+            display: none;
+          }
+        }
       }
     }
     input {
       color: #ffffff;
-      background: #5579A1;
+      background: rgb(0,0,0,0.5);
       padding: 10px 42px;
       border: 0;
       background-image: url(${`${BASE_URL}/icons/search.svg`});
@@ -149,14 +157,14 @@ AlurakutMenu.Wrapper = styled.header`
       border-radius: 1000px;
       font-size: 12px;
       ::placeholder {
-        color: #ffffff;
+        color: rgb(255,255,255,0.5);
         opacity: 1;
       }
     } 
   }
 `;
 AlurakutMenu.Logo = styled.img`
-  background-color: #ffffff;
+  background-color: rgb(255,255,255,0.8);
   padding: 9px 14px;
   border-radius: 1000px;
   height: 34px;
@@ -221,8 +229,8 @@ export function AlurakutProfileSidebarMenuDefault() {
 }
 AlurakutProfileSidebarMenuDefault.Wrapper = styled.div`
   a {
-    font-size: 12px;
-    color: #2E7BB4;
+    font-size: 14px;
+    color: #FFFFFF;
     margin-bottom: 16px;
     display: flex;
     align-items: center;
@@ -290,7 +298,7 @@ OrkutNostalgicIconSet.List = styled.ul`
   flex-wrap: wrap;
   li {
     font-size: 12px;
-    color: #5A5A5A;
+    color: #FFFFFF;
     display: grid;
     grid-template-areas:
       "title title"

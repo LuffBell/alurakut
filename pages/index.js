@@ -1,31 +1,11 @@
 import { MainGrid } from "../src/components/MainGrid"
 import Box from "../src/components/Box"
-import { AlurakutMenu, AlurakutProfileSidebarMenuDefault, OrkutNostalgicIconSet } from "../src/components/lib/AlurakutCummons"
+import { AlurakutMenu, OrkutNostalgicIconSet } from "../src/components/lib/AlurakutCummons"
 import { ProfileRelationsWrapper } from "../src/components/ProfileRelationsWrapper"
 import { useState } from "react"
+import ProfileSideBar from "../src/components/ProfileSideBar"
+import { FormAddComunity } from "../src/components/FormAddComunity"
 
-const ProfileSideBar = (props) => {
-  return (
-    <>
-      <Box>
-        <img src={`https://github.com/${props.usuario}.png`} style={{ borderRadius: '8px' }} />
-
-        <hr />
-
-        <p>
-          <a className="boxLink" href={`https://github.com/${props.usuario}`}>
-            @{props.usuario}
-          </a>
-        </p>
-
-        <hr />
-
-        <AlurakutProfileSidebarMenuDefault />
-      </Box>
-      
-    </>
-  )
-}
 
 export default function Home() {
   const [pessoasFavoritas, setPessoasFavoritas] = useState([])
@@ -77,28 +57,13 @@ export default function Home() {
           </Box>
           <Box>
             <h2 className="subTitle">O que você deseja fazer?</h2>
-            <form onSubmit={handleAddCommunity}>
-              <input
-              placeholder="Nome para a comunidade:"
-              name="nome"
-              aria-label="Nome para a comunidade"
-              type="text"
-              />
-
-              <input
-              placeholder="Url da imagen da comunidade"
-              name="imagen"
-              aria-label="Url da imagen da comunidade"
-              />
-
-              <button>Criar comunidade</button>
-            </form>
+            <FormAddComunity handleAddCommunity={handleAddCommunity}/>
           </Box>
         </div>
         <div className="profileRelationsArea" style={{ gridArea: "profileRelationsArea" }}>
           <ProfileRelationsWrapper>
             <h2 className="smallTitle">
-              Amigxs ({pessoasFavoritas.length})
+              Meus Amigxs ({pessoasFavoritas.length})
             </h2>
             <ul>
               {pessoasFavoritas.map((i, index)=> {
@@ -113,11 +78,11 @@ export default function Home() {
                 )
               })}
             </ul>
-            <a className="buttonVerTodos">Ver Todos</a>
+            <button className="buttonVerTodos"><a>Ver Todos</a></button>
           </ProfileRelationsWrapper>
           <ProfileRelationsWrapper>
             <h2 className="smallTitle">
-              Comunidades ({comunidades.length})
+              Minhas comunidades ({comunidades.length})
             </h2>
             <ul>
               {comunidades.map((i, index)=> {
@@ -132,7 +97,7 @@ export default function Home() {
                 )
               })}
             </ul>
-            <a className="buttonVerTodos">Ver Todos</a>
+            <button className="buttonVerTodos"><a>Ver Todos</a></button>
           </ProfileRelationsWrapper>
         </div>
       </MainGrid>
