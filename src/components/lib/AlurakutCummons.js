@@ -56,7 +56,8 @@ AlurakutMenu.Wrapper = styled.header`
   max-width: 1100px;
   margin: 0 auto;
   .alurakutMenuProfileSidebar {
-    background: rgb(255,255,255,0.9);
+    background: rgb(128,128,128,0.8);
+    backdrop-filter: blur(5px);
     position: fixed;
     z-index: 100;
     padding: 46px;
@@ -80,7 +81,7 @@ AlurakutMenu.Wrapper = styled.header`
     }
     .boxLink {
       font-size: 18px;
-      color: #2E7BB4;
+      color: #000000;
       -webkit-text-decoration: none;
       text-decoration: none;
       font-weight: 800;
@@ -230,7 +231,7 @@ export function AlurakutProfileSidebarMenuDefault() {
 AlurakutProfileSidebarMenuDefault.Wrapper = styled.div`
   a {
     font-size: 14px;
-    color: #FFFFFF;
+    color: rgb(255,255,255,0.8);
     margin-bottom: 16px;
     display: flex;
     align-items: center;

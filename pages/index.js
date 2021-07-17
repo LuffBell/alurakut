@@ -12,12 +12,12 @@ import { SendScrap } from "../src/components/SendScrap"
 export default function Home() {
   const [pessoasFavoritas, setPessoasFavoritas] = useState([])
   const [comunidades, setComunidades] = useState([
-    { data: new Date().toISOString(), nome: "Circo Pega Fogo", imagen: "https://github.com/LuffBell/alurakut/blob/main/src/img/comu1.jpeg?raw=true" },
-    { data: new Date().toISOString(), nome: "VASP", imagen: "https://github.com/LuffBell/alurakut/blob/main/src/img/comu2.jpg?raw=true" },
-    { data: new Date().toISOString(), nome: "Pensador", imagen: "https://raw.githubusercontent.com/LuffBell/alurakut/main/src/img/comu3.webp" },
-    { data: new Date().toISOString(), nome: "Er...", imagen: "https://github.com/LuffBell/alurakut/blob/main/src/img/comu4.jpg?raw=true" },
-    { data: new Date().toISOString(), nome: "Esquizopocs", imagen: "https://github.com/LuffBell/alurakut/blob/main/src/img/comu5.jfif?raw=true" },
-    { data: new Date().toISOString(), nome: "<3", imagen: "https://github.com/LuffBell/alurakut/blob/main/src/img/comu6.jpg?raw=true" },
+    { id: "0", nome: "Circo Pega Fogo", imagen: "https://github.com/LuffBell/alurakut/blob/main/src/img/comu1.jpeg?raw=true" },
+    { id: "1", nome: "VASP", imagen: "https://github.com/LuffBell/alurakut/blob/main/src/img/comu2.jpg?raw=true" },
+    { id: "2", nome: "Pensador", imagen: "https://raw.githubusercontent.com/LuffBell/alurakut/main/src/img/comu3.webp" },
+    { id: "3", nome: "Er...", imagen: "https://github.com/LuffBell/alurakut/blob/main/src/img/comu4.jpg?raw=true" },
+    { id: "4", nome: "Esquizopocs", imagen: "https://github.com/LuffBell/alurakut/blob/main/src/img/comu5.jfif?raw=true" },
+    { id: "5", nome: "<3", imagen: "https://github.com/LuffBell/alurakut/blob/main/src/img/comu6.jpg?raw=true" },
   ])
   const [controller, setController] = useState(0);
 
@@ -37,19 +37,33 @@ export default function Home() {
       console.log(error);
     })
 
-    const handleAddCommunity = (e) => {
-      e.preventDefault();
-      
-      const dataForm = new FormData(e.target);
-
-      const comunidade = {
-        data: new Date().toISOString(),
-        nome: dataForm.get('nome'),
-        imagen: dataForm.get('imagen')
-      }
-
-      setComunidades([...comunidades, comunidade])
+  const handleAddCommunity = (e) => {
+    e.preventDefault();
+    
+    const dataForm = new FormData(e.target);
+    const comunidade = {
+      data: new Date().toISOString(),
+      nome: dataForm.get('nome'),
+      imagen: dataForm.get('imagen')
     }
+    setComunidades([...comunidades, comunidade])
+  }
+
+  const SwitchThings = (props) => {
+    switch (props.controller) {
+      case 0:
+        return (<FormAddComunity handleAddCommunity={handleAddCommunity} />)
+        break;
+      case 1:
+        return (<AddDepoiment />)
+        break;
+      case 2:
+        return (<SendScrap />)
+        break;
+      default:
+        break;
+    }
+  }
 
   return (
     <>
@@ -72,11 +86,13 @@ export default function Home() {
               {["Criar Comunidade", "Escrever um depoimento", "Deixar um scrap"].map((i,index)=>{
                 return (
                   <li key={index}>
-                    <button>{i}</button>
+                    <button onClick={() => { setController(index) }}>{i}</button>
                   </li>
                 )
               })}
             </ul>
+            
+            <SwitchThings controller={controller}/>
 
           </Box>
         </div>
@@ -108,7 +124,7 @@ export default function Home() {
               {comunidades.map((i, index)=> {
                 const style = index > 5 ? "none" : "block";
                 return (
-                  <li key={i.data} style={{ display: style }}>
+                  <li key={i.id} style={{ display: style }}>
                     <a href={`/users/${i.login}`}>
                       <img src={i.imagen}/>
                       <span>{i.nome}</span>
