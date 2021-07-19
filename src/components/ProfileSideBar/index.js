@@ -1,5 +1,5 @@
 import Box from "../Box"
-import { AlurakutProfileSidebarMenuDefault } from "../lib/AlurakutCummons"
+import { AlurakutProfileSidebarMenuDefault } from "../../lib/AlurakutCummons"
 
 const ProfileSideBar = (props) => {
     return (

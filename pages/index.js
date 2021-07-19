@@ -1,8 +1,10 @@
+import nookies from 'nookies'
+import jwt from 'jsonwebtoken'
 import { MainGrid } from "../src/components/MainGrid"
 import Box from "../src/components/Box"
-import { AlurakutMenu, OrkutNostalgicIconSet } from "../src/components/lib/AlurakutCummons"
+import { AlurakutMenu, OrkutNostalgicIconSet } from "../src/lib/AlurakutCummons"
 import { ProfileRelationsWrapper } from "../src/components/ProfileRelationsWrapper"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import ProfileSideBar from "../src/components/ProfileSideBar"
 import { FormAddComunity } from "../src/components/FormAddComunity"
 import { AddDepoiment } from "../src/components/AddDepoiment"
@@ -11,42 +13,73 @@ import { SendScrap } from "../src/components/SendScrap"
 
 export default function Home() {
   const [pessoasFavoritas, setPessoasFavoritas] = useState([])
-  const [comunidades, setComunidades] = useState([
-    { id: "0", nome: "Circo Pega Fogo", imagen: "https://github.com/LuffBell/alurakut/blob/main/src/img/comu1.jpeg?raw=true" },
-    { id: "1", nome: "VASP", imagen: "https://github.com/LuffBell/alurakut/blob/main/src/img/comu2.jpg?raw=true" },
-    { id: "2", nome: "Pensador", imagen: "https://raw.githubusercontent.com/LuffBell/alurakut/main/src/img/comu3.webp" },
-    { id: "3", nome: "Er...", imagen: "https://github.com/LuffBell/alurakut/blob/main/src/img/comu4.jpg?raw=true" },
-    { id: "4", nome: "Esquizopocs", imagen: "https://github.com/LuffBell/alurakut/blob/main/src/img/comu5.jfif?raw=true" },
-    { id: "5", nome: "<3", imagen: "https://github.com/LuffBell/alurakut/blob/main/src/img/comu6.jpg?raw=true" },
-  ])
-  const [controller, setController] = useState(0);
+  const [comunidades, setComunidades] = useState([])
+  const [controller, setController] = useState(3);
 
   const axios = require('axios').default;
 
   const usuario = 'luffbell';
 
-  axios({
-    method: 'get',
-    url: 'https://api.github.com/users/juunegreiros/followers',
-    responseType: 'json'
-  })
-    .then((response)=>{
-      setPessoasFavoritas([...response.data])
+  useEffect(() => {
+    axios({
+      method: 'get',
+      url: 'https://api.github.com/users/juunegreiros/followers',
+      responseType: 'json'
     })
-    .catch((error)=>{
-      console.log(error);
+      .then((response)=>{
+        setPessoasFavoritas([...response.data])
+      })
+      .catch((error)=>{
+        console.log(error);
+      })
+    
+    axios({
+      method: 'POST',
+      url: 'https://graphql.datocms.com/',
+      headers: {
+        'Authorization': 'c3f161ae3bc1bdb07fc16bdfd7809b',
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      data: JSON.stringify({ "query": `query {
+        allCommunities {
+          id
+          title
+          imageurl
+          creatorSlug
+        }
+      }`}
+      )
     })
+    .then((response) => {
+      const comunidadesVindasDoDato = response.data.data.allCommunities;
+      setComunidades([...comunidadesVindasDoDato])
+    })
+      
+  }, [])
 
   const handleAddCommunity = (e) => {
     e.preventDefault();
     
     const dataForm = new FormData(e.target);
     const comunidade = {
-      data: new Date().toISOString(),
-      nome: dataForm.get('nome'),
-      imagen: dataForm.get('imagen')
+      title: dataForm.get('nome'),
+      imageurl: dataForm.get('imagen'),
+      creatorSlug: usuario,
     }
-    setComunidades([...comunidades, comunidade])
+    axios({
+      method: 'POST',
+      url: '/api/comunidades',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: JSON.stringify(comunidade)
+    })
+    .then(async (response) => {
+      const dados = await response.data;
+      const comunidade = dados.registroCriado;
+      setComunidades([comunidade, ...comunidades])
+    })
   }
 
   const SwitchThings = (props) => {
@@ -60,6 +93,8 @@ export default function Home() {
       case 2:
         return (<SendScrap />)
         break;
+      case 3:
+        return (<></>)
       default:
         break;
     }
@@ -125,9 +160,9 @@ export default function Home() {
                 const style = index > 5 ? "none" : "block";
                 return (
                   <li key={i.id} style={{ display: style }}>
-                    <a href={`/users/${i.login}`}>
-                      <img src={i.imagen}/>
-                      <span>{i.nome}</span>
+                    <a href={`/communities/${i.title}`}>
+                      <img src={i.imageurl}/>
+                      <span>{i.title}</span>
                     </a>
                   </li>
                 )
@@ -139,4 +174,16 @@ export default function Home() {
       </MainGrid>
     </>
   )
+}
+
+export async function getServerSideProps (context) {
+  const cookies = nookies.get(context)
+  const token = cookies.user_token
+  const githubUser = jwt.decode(token).githubUser
+  console.log(githubUser);
+  return {
+    props: {
+      githubUser: 'luffbell',
+    },
+  }
 }
