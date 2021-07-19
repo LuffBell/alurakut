@@ -1,6 +1,6 @@
-export const AddDepoiment = () => {
+export const AddDepoiment = (props) => {
     return (
-        <form>
+        <form onSubmit={props.handleAddDepoiments}>
             <input
             placeholder="Escreva seu depoimento"
             name="depoimento"

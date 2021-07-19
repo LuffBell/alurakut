@@ -5,8 +5,7 @@ import nookies from 'nookies';
 
 export default function LoginScreen() {
     const router = useRouter();
-    const axios = require('axios').default;
-    const [githubUser, setGithubUser] = useState('');
+    const [githubUser, setGithubUser] = useState('luffbell');
 
   return (
     <main style={{ display: 'flex', flex: 1, alignItems: 'center', justifyContent: 'center', height: "100vh" }}>
@@ -20,10 +19,26 @@ export default function LoginScreen() {
         </section>
 
         <section className="formArea">
-          <form className="box" onSubmit={(e)=>{
-                e.preventDefault();
-                router.push('/')
-            }}>
+          <form className="box" onSubmit={(infosDoEvento) => {
+                infosDoEvento.preventDefault();
+                // alert('Alguém clicou no botão!')
+                fetch('https://alurakut.vercel.app/api/login', {
+                    method: 'POST',
+                    headers: {
+                       'Content-Type': 'application/json'  
+                    },
+                    body: JSON.stringify({ githubUser: githubUser })
+                })
+                .then(async (respostaDoServer) => {
+                    const dadosDaResposta = await respostaDoServer.json()
+                    const token = dadosDaResposta.token;
+                    nookies.set(null, 'USER_TOKEN', token, {
+                        path: '/',
+                        maxAge: 86400 * 7 
+                    })
+                    router.push('/')
+                })
+          }}>
             <p>
               Acesse agora mesmo com seu usuário do <strong>GitHub</strong>!
           </p>
