@@ -175,15 +175,3 @@ export default function Home() {
     </>
   )
 }
-
-export async function getServerSideProps (context) {
-  const cookies = nookies.get(context)
-  const token = cookies.user_token
-  const githubUser = jwt.decode(token).githubUser
-  console.log(githubUser);
-  return {
-    props: {
-      githubUser: 'luffbell',
-    },
-  }
-}
