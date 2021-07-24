@@ -94,7 +94,7 @@ AlurakutMenu.Wrapper = styled.header`
     }
   }
   .container {
-    background-color: rgb(255,255,255,0.4);
+    background-color: rgb(255,255,255,0.2);
     backdrop-filter: blur(5px);
     border-radius: 20px;
     border: 0.5px solid #ffffff;

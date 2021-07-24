@@ -15,7 +15,7 @@ export default function Home(props) {
   const [pessoasFavoritas, setPessoasFavoritas] = useState([])
   const [comunidades, setComunidades] = useState([])
   const [controller, setController] = useState(3);
-  const [depoiments, setDepoiments] = useState(['Olá, tudo bem?']);
+  const [depoiments, setDepoiments] = useState([]);
 
   const axios = require('axios').default;
 
@@ -24,7 +24,7 @@ export default function Home(props) {
   useEffect(() => {
     axios({
       method: 'get',
-      url: 'https://api.github.com/users/juunegreiros/followers',
+      url: `https://api.github.com/users/${usuario}/followers`,
       responseType: 'json'
     })
       .then((response)=>{
@@ -38,7 +38,7 @@ export default function Home(props) {
       method: 'POST',
       url: 'https://graphql.datocms.com/',
       headers: {
-        'Authorization': 'c3f161ae3bc1bdb07fc16bdfd7809b',
+        'Authorization': '5c9f8f78ee8f1d509567f90998bae8',
         'Content-Type': 'application/json',
         'Accept': 'application/json',
       },
@@ -55,6 +55,28 @@ export default function Home(props) {
     .then((response) => {
       const comunidadesVindasDoDato = response.data.data.allCommunities;
       setComunidades([...comunidadesVindasDoDato])
+    })
+
+    axios({
+      method: 'POST',
+      url: 'https://graphql.datocms.com/',
+      headers: {
+        'Authorization': '5c9f8f78ee8f1d509567f90998bae8',
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      data: JSON.stringify({ "query": `query {
+        allDepoiments {
+          id
+          people
+          depoimento
+        }
+      }`}
+      )
+    })
+    .then((response) => {
+      const depoimentsVindasDoDato = response.data.data.allDepoiments;
+      setDepoiments([...depoimentsVindasDoDato])
     })
       
   }, [])
@@ -87,8 +109,23 @@ export default function Home(props) {
     e.preventDefault();
 
     const formDepoiments = new FormData(e.target)
-    const depoimento = formDepoiments.get('depoimento')
-    setDepoiments([depoimento, ...depoiments])
+    const depoimento = {
+      people: usuario,
+      depoimento: formDepoiments.get('depoimento'),
+    }
+    axios({
+      method: 'POST',
+      url: '/api/depoimentos',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: JSON.stringify(depoimento)
+    })
+    .then(async (response) => {
+      const dadosDepoimento = await response.data;
+      const depoimento = dadosDepoimento.registroCriado;
+      setDepoiments([depoimento, ...depoiments])
+    })
   }
 
   const SwitchThings = (props) => {
@@ -144,9 +181,12 @@ export default function Home(props) {
             <ul  style={{ listStyleType: "none" }}>
               {depoiments.map((i,index)=> {
                 return (
-                  <li key={index} style={{ display: "flex", alignItems: "center", borderBottom: "1px solid #ffffff", padding: "1rem 0" }}>
-                    <img src={`https://github.com/${usuario}.png`} style={{ width: "80px", marginRight: "1rem", borderRadius: "8px" }}/>
-                    <p style={{ color: "#FFFFFF" }}>{i}</p>
+                  <li key={i.id} style={{ display: "flex", alignItems: "center", borderBottom: "1px solid #ffffff", padding: "1rem 0" }}>
+                    <img src={`https://github.com/${i.people}.png`} style={{ width: "80px", marginRight: "1rem", borderRadius: "8px" }}/>
+                    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                      <a style={{ textDecoration: 'none', color: '#D81D99', paddingBottom: '1rem'  }} href={`https://github.com/${i.people}`}>@{i.people}</a>
+                      <p style={{ color: "#FFFFFF" }}>{i.depoimento}</p>
+                    </div>
                   </li>
                 )
               })}
