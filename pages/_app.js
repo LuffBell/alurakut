@@ -24,6 +24,11 @@ const GlobalStyle = createGlobalStyle`
     height: auto;
   }
 
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
   ${AlurakutStyles}
 `
 

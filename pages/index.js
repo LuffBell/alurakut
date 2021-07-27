@@ -9,7 +9,6 @@ import ProfileSideBar from "../src/components/ProfileSideBar"
 import { FormAddComunity } from "../src/components/FormAddComunity"
 import { AddDepoiment } from "../src/components/AddDepoiment"
 import { SendScrap } from "../src/components/SendScrap"
-import { ComunnityGrid } from "../src/components/ComunnityGrid"
 
 
 export default function Home(props) {
@@ -23,7 +22,7 @@ export default function Home(props) {
   const deletToken = () => {
     nookies.destroy(null, 'USER_TOKEN')
   }
-
+  
   const usuario = props.githubUser;
 
   useEffect(() => {
@@ -83,7 +82,6 @@ export default function Home(props) {
       const depoimentsVindasDoDato = response.data.data.allDepoiments;
       setDepoiments([...depoimentsVindasDoDato])
     })
-      
   }, [])
 
   const handleAddCommunity = (e) => {
@@ -228,7 +226,7 @@ export default function Home(props) {
                 const style = index > 5 ? "none" : "block";
                 return (
                   <li key={i.id} style={{ display: style }}>
-                    <a href={`/communities/${i.title}`}>
+                    <a href={`/comunidades/${usuario}`}>
                       <img src={i.imageurl}/>
                       <span>{i.title}</span>
                     </a>
@@ -236,35 +234,11 @@ export default function Home(props) {
                 )
               })}
             </ul>
-            <button className="buttonVerTodos"><a>Ver Todos</a></button>
+            <button className="buttonVerTodos"><a href={`/comunidades/${usuario}`}>Ver Todos</a></button>
           </ProfileRelationsWrapper>
         </div>
       </MainGrid>
 
-      <ComunnityGrid>
-        <div className="profileArea" style={{ gridArea: "profileArea" }}>
-          <ProfileSideBar usuario={usuario} />
-        </div>
-        <div style={{ gridArea: "comunnityArea" }}>
-            <Box>
-              <h2 className="title">Minhas comunidades:</h2>
-
-              <ul>
-                {comunidades.map((i)=>{
-                  return (
-                    <li key={i.id} className="listItens">
-                      <img src={i.imageurl} className="imgBox"/>
-                      <div className="divInfo">
-                        <p style={{ color: "#FFFFFF", paddingBottom: "1rem" }}>{i.title}</p>
-                        <p style={{ color: "#FFFFFF95" }}>Dono: {i.creatorSlug}</p>
-                      </div>
-                    </li>
-                  )
-                })}
-              </ul>
-            </Box>
-        </div>
-      </ComunnityGrid>
     </>
   )
 }
