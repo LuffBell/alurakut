@@ -9,6 +9,7 @@ import ProfileSideBar from "../src/components/ProfileSideBar"
 import { FormAddComunity } from "../src/components/FormAddComunity"
 import { AddDepoiment } from "../src/components/AddDepoiment"
 import { SendScrap } from "../src/components/SendScrap"
+import { ComunnityGrid } from "../src/components/ComunnityGrid"
 
 
 export default function Home(props) {
@@ -18,6 +19,10 @@ export default function Home(props) {
   const [depoiments, setDepoiments] = useState([]);
 
   const axios = require('axios').default;
+
+  const deletToken = () => {
+    nookies.destroy(null, 'USER_TOKEN')
+  }
 
   const usuario = props.githubUser;
 
@@ -148,7 +153,8 @@ export default function Home(props) {
 
   return (
     <>
-      <AlurakutMenu githubUser={usuario}/>
+      <AlurakutMenu githubUser={usuario} deletToken={deletToken}/>
+
       <MainGrid>
         <div className="profileArea" style={{ gridArea: "profileArea" }}>
           <ProfileSideBar usuario={usuario} />
@@ -178,12 +184,12 @@ export default function Home(props) {
           </Box>
           <Box>
             <h2 className="subTitle">Depoimentos</h2>
-            <ul  style={{ listStyleType: "none" }}>
+            <ul>
               {depoiments.map((i,index)=> {
                 return (
-                  <li key={i.id} style={{ display: "flex", alignItems: "center", borderBottom: "1px solid #ffffff", padding: "1rem 0" }}>
-                    <img src={`https://github.com/${i.people}.png`} style={{ width: "80px", marginRight: "1rem", borderRadius: "8px" }}/>
-                    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                  <li key={i.id} className="listItens">
+                    <img src={`https://github.com/${i.people}.png`} className="imgBox"/>
+                    <div className="divInfo">
                       <a style={{ textDecoration: 'none', color: '#D81D99', paddingBottom: '1rem'  }} href={`https://github.com/${i.people}`}>@{i.people}</a>
                       <p style={{ color: "#FFFFFF" }}>{i.depoimento}</p>
                     </div>
@@ -234,6 +240,31 @@ export default function Home(props) {
           </ProfileRelationsWrapper>
         </div>
       </MainGrid>
+
+      <ComunnityGrid>
+        <div className="profileArea" style={{ gridArea: "profileArea" }}>
+          <ProfileSideBar usuario={usuario} />
+        </div>
+        <div style={{ gridArea: "comunnityArea" }}>
+            <Box>
+              <h2 className="title">Minhas comunidades:</h2>
+
+              <ul>
+                {comunidades.map((i)=>{
+                  return (
+                    <li key={i.id} className="listItens">
+                      <img src={i.imageurl} className="imgBox"/>
+                      <div className="divInfo">
+                        <p style={{ color: "#FFFFFF", paddingBottom: "1rem" }}>{i.title}</p>
+                        <p style={{ color: "#FFFFFF95" }}>Dono: {i.creatorSlug}</p>
+                      </div>
+                    </li>
+                  )
+                })}
+              </ul>
+            </Box>
+        </div>
+      </ComunnityGrid>
     </>
   )
 }

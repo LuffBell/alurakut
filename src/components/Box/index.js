@@ -41,6 +41,22 @@ const Box = styled.div`
     font-weight: bold;
     margin-top: 2rem;
   }
+  .listItens {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #ffffff;
+    padding: 1rem 0; 
+  }
+  .imgBox {
+    width: 80px;
+    margin-right: 1rem;
+    border-radius: 8px;
+  }
+  .divInfo {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
   hr {
     margin-top: 12px;
     margin-bottom: 8px;
@@ -66,6 +82,9 @@ const Box = styled.div`
     color: #FFFFFF;
     border-radius: 10000px;
     background-color: #FFFFFF40;
+  }
+  ul {
+    list-style: none;
   }
 `
 
